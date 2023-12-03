@@ -20,46 +20,31 @@ const fetchUserFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     ]);
 });
 const getSingleUserFromDB = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(yield user_model_1.User.isUserExists(userId))) {
-        throw new Error("User Not Found");
-    }
+    yield checkUserExists(userId);
     return yield user_model_1.User.findOne({ userId });
 });
 const updateUserIntoDB = (userId, user) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(yield user_model_1.User.isUserExists(userId))) {
-        throw new Error("User Not Found");
-    }
+    yield checkUserExists(userId);
     const newData = user;
     return yield user_model_1.User.updateOne({ userId }, newData, { new: true });
 });
 const deleteUserFromDB = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(yield user_model_1.User.isUserExists(userId))) {
-        throw new Error("User Not Found");
-    }
+    yield checkUserExists(userId);
     return yield user_model_1.User.deleteOne({ userId });
 });
 const createUserOrders = (userId, orders) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(yield user_model_1.User.isUserExists(userId))) {
-        throw new Error("User Not Found");
-    }
+    yield checkUserExists(userId);
     return yield user_model_1.User.findOneAndUpdate({ userId }, { $push: { orders } }, { new: true });
 });
 const getUserAllOrdersFromDB = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(yield user_model_1.User.isUserExists(userId))) {
-        throw {
-            statusCode: 404,
-            message: "User not found!",
-        };
-    }
+    yield checkUserExists(userId);
     return yield user_model_1.User.aggregate([
         { $match: { userId: Number(userId) } },
         { $project: { orders: 1 } },
     ]);
 });
 const calculatePriceOfOrders = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(yield user_model_1.User.isUserExists(userId))) {
-        throw new Error("User Not Found");
-    }
+    yield checkUserExists(userId);
     return yield user_model_1.User.aggregate([
         { $match: { userId: Number(userId) } },
         {
@@ -76,6 +61,15 @@ const calculatePriceOfOrders = (userId) => __awaiter(void 0, void 0, void 0, fun
             },
         },
     ]);
+});
+// check user existance
+const checkUserExists = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!(yield user_model_1.User.isUserExists(userId))) {
+        throw {
+            statusCode: 404,
+            message: "User not found!",
+        };
+    }
 });
 exports.UserServices = {
     createUserIntoDB,

@@ -12,31 +12,27 @@ const fetchUserFromDB = async () => {
 };
 
 const getSingleUserFromDB = async (userId: any) => {
-  if (!(await User.isUserExists(userId))) {
-    throw new Error("User Not Found");
-  }
+  await checkUserExists(userId);
+
   return await User.findOne({ userId });
 };
 
 const updateUserIntoDB = async (userId: any, user: TUser) => {
-  if (!(await User.isUserExists(userId))) {
-    throw new Error("User Not Found");
-  }
+  await checkUserExists(userId);
+
   const newData = user;
   return await User.updateOne({ userId }, newData, { new: true });
 };
 
 const deleteUserFromDB = async (userId: any) => {
-  if (!(await User.isUserExists(userId))) {
-    throw new Error("User Not Found");
-  }
+  await checkUserExists(userId);
+
   return await User.deleteOne({ userId });
 };
 
 const createUserOrders = async (userId: any, orders: TOrders) => {
-  if (!(await User.isUserExists(userId))) {
-    throw new Error("User Not Found");
-  }
+  await checkUserExists(userId);
+
   return await User.findOneAndUpdate(
     { userId },
     { $push: { orders } },
@@ -45,12 +41,8 @@ const createUserOrders = async (userId: any, orders: TOrders) => {
 };
 
 const getUserAllOrdersFromDB = async (userId: any) => {
-  if (!(await User.isUserExists(userId))) {
-    throw {
-      statusCode: 404,
-      message: "User not found!",
-    };
-  }
+  await checkUserExists(userId);
+
   return await User.aggregate([
     { $match: { userId: Number(userId) } },
     { $project: { orders: 1 } },
@@ -58,9 +50,7 @@ const getUserAllOrdersFromDB = async (userId: any) => {
 };
 
 const calculatePriceOfOrders = async (userId: any) => {
-  if (!(await User.isUserExists(userId))) {
-    throw new Error("User Not Found");
-  }
+  await checkUserExists(userId);
   return await User.aggregate([
     { $match: { userId: Number(userId) } },
     {
@@ -77,6 +67,16 @@ const calculatePriceOfOrders = async (userId: any) => {
       },
     },
   ]);
+};
+
+// check user existance
+const checkUserExists = async (userId: any) => {
+  if (!(await User.isUserExists(userId))) {
+    throw {
+      statusCode: 404,
+      message: "User not found!",
+    };
+  }
 };
 
 export const UserServices = {

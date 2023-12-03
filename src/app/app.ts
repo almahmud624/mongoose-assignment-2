@@ -14,7 +14,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello Assignment");
 });
 
-// error handler
+// error handling middleware
 const errorHandler = (
   error: any,
   req: Request,

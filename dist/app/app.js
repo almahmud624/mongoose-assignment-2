@@ -15,7 +15,7 @@ app.use("/api/v1/users", user_route_1.userRoutes);
 app.get("/", (req, res) => {
     res.send("Hello Assignment");
 });
-// error handler
+// error handling middleware
 const errorHandler = (error, req, res, next) => {
     const statusCode = (error === null || error === void 0 ? void 0 : error.statusCode) || 500;
     const message = error === null || error === void 0 ? void 0 : error.message;

@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserServices } from "./user.service";
 import {
   OrdersValidationSchemaZod,
   UserValidationSchemaByZod,
 } from "./user.zod.validation";
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = req.body;
     const zodParseData = UserValidationSchemaByZod.parse(user);
@@ -17,15 +17,15 @@ const createUser = async (req: Request, res: Response) => {
       data: resUser,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 
-const fetchAllUser = async (req: Request, res: Response) => {
+const fetchAllUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await UserServices.fetchUserFromDB();
     res.status(200).json({
@@ -34,15 +34,15 @@ const fetchAllUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 
-const getSingleUser = async (req: Request, res: Response) => {
+const getSingleUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const id = req.params.userId;
     const result = await UserServices.getSingleUserFromDB(id);
@@ -53,15 +53,11 @@ const getSingleUser = async (req: Request, res: Response) => {
       data: resUser,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.userId;
     const newData = req.body;
@@ -77,15 +73,11 @@ const updateUser = async (req: Request, res: Response) => {
       });
     }
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.userId;
     await UserServices.deleteUserFromDB(id);
@@ -95,15 +87,15 @@ const deleteUser = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 
-const createOrders = async (req: Request, res: Response) => {
+const createOrders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const id = req.params.userId;
     const orders = req.body;
@@ -115,15 +107,15 @@ const createOrders = async (req: Request, res: Response) => {
       data: null,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 
-const getUserAllOrders = async (req: Request, res: Response) => {
+const getUserAllOrders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const id = req.params.userId;
     const result = await UserServices.getUserAllOrdersFromDB(id);
@@ -133,15 +125,15 @@ const getUserAllOrders = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 
-const calculatePrice = async (req: Request, res: Response) => {
+const calculatePrice = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const id = req.params.userId;
     const result = await UserServices.calculatePriceOfOrders(id);
@@ -151,11 +143,7 @@ const calculatePrice = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error?.message || "Something went wrong",
-      error: error,
-    });
+    next(error);
   }
 };
 

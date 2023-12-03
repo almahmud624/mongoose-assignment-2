@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const user_service_1 = require("./user.service");
 const user_zod_validation_1 = require("./user.zod.validation");
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.body;
         const zodParseData = user_zod_validation_1.UserValidationSchemaByZod.parse(user);
@@ -36,14 +36,10 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
-const fetchAllUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const fetchAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield user_service_1.UserServices.fetchUserFromDB();
         res.status(200).json({
@@ -53,14 +49,10 @@ const fetchAllUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
-const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getSingleUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
         const result = yield user_service_1.UserServices.getSingleUserFromDB(id);
@@ -72,14 +64,10 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: (error === null || error === void 0 ? void 0 : error.message) || "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
-const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
         const newData = req.body;
@@ -95,14 +83,10 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: (error === null || error === void 0 ? void 0 : error.message) || "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
-const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
         yield user_service_1.UserServices.deleteUserFromDB(id);
@@ -113,14 +97,10 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: (error === null || error === void 0 ? void 0 : error.message) || "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
-const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createOrders = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
         const orders = req.body;
@@ -133,14 +113,10 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: (error === null || error === void 0 ? void 0 : error.message) || "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
-const getUserAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserAllOrders = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
         const result = yield user_service_1.UserServices.getUserAllOrdersFromDB(id);
@@ -151,14 +127,10 @@ const getUserAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: (error === null || error === void 0 ? void 0 : error.message) || "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
-const calculatePrice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const calculatePrice = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.userId;
         const result = yield user_service_1.UserServices.calculatePriceOfOrders(id);
@@ -169,11 +141,7 @@ const calculatePrice = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
     catch (error) {
-        res.status(500).json({
-            success: false,
-            message: (error === null || error === void 0 ? void 0 : error.message) || "Something went wrong",
-            error: error,
-        });
+        next(error);
     }
 });
 exports.userController = {

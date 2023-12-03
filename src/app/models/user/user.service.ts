@@ -46,7 +46,10 @@ const createUserOrders = async (userId: any, orders: TOrders) => {
 
 const getUserAllOrdersFromDB = async (userId: any) => {
   if (!(await User.isUserExists(userId))) {
-    throw new Error("User Not Found");
+    throw {
+      statusCode: 404,
+      message: "User not found!",
+    };
   }
   return await User.aggregate([
     { $match: { userId: Number(userId) } },

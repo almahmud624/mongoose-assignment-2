@@ -15,4 +15,18 @@ app.use("/api/v1/users", user_route_1.userRoutes);
 app.get("/", (req, res) => {
     res.send("Hello Assignment");
 });
+// error handler
+const errorHandler = (error, req, res, next) => {
+    const statusCode = (error === null || error === void 0 ? void 0 : error.statusCode) || 500;
+    const message = error === null || error === void 0 ? void 0 : error.message;
+    res.status(statusCode).json({
+        success: false,
+        message: message || "Something went wrong",
+        error: {
+            code: statusCode,
+            description: message || "Internal Server Error",
+        },
+    });
+};
+app.use(errorHandler);
 exports.default = app;

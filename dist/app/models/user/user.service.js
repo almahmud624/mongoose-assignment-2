@@ -46,7 +46,10 @@ const createUserOrders = (userId, orders) => __awaiter(void 0, void 0, void 0, f
 });
 const getUserAllOrdersFromDB = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(yield user_model_1.User.isUserExists(userId))) {
-        throw new Error("User Not Found");
+        throw {
+            statusCode: 404,
+            message: "User not found!",
+        };
     }
     return yield user_model_1.User.aggregate([
         { $match: { userId: Number(userId) } },

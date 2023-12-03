@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import { UserServices } from "./user.service";
-import {
-  OrdersValidationSchemaZod,
-  UserValidationSchemaByZod,
-} from "./user.zod.validation";
+import { UserValidationSchemaByZod } from "./user.zod.validation";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -61,8 +58,33 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const newData = req.body;
+    const zodParseData = UserValidationSchemaByZod.parse(newData);
+    const result = await UserServices.updateUserIntoDB(id, zodParseData);
+
+    if (result.modifiedCount > 0) {
+      const { password, ...restUser } = newData || {};
+      res.status(200).json({
+        success: true,
+        message: "User successfully updated",
+        data: restUser,
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error?.message || "Something went wrong",
+      error: error,
+    });
+  }
+};
+
 export const userController = {
   createUser,
   fetchAllUser,
   getSingleUser,
+  updateUser,
 };

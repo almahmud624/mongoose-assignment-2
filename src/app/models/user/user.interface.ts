@@ -19,7 +19,7 @@ export type TOrders = TOrder[] | TOrder;
 export type TUser = {
   userId: number;
   username: string;
-  password: string;
+  password?: string;
   fullName: TFullname;
   age: number;
   email: string;

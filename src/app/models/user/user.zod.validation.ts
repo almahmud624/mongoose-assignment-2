@@ -25,7 +25,7 @@ export const OrdersValidationSchemaZod = z.union([
 export const UserValidationSchemaByZod = z.object({
   userId: z.number().min(1),
   username: z.string().min(1),
-  password: z.string().min(1),
+  password: z.string().optional(),
   fullName: FullNameSchema,
   age: z.number().min(1),
   email: z.string().email(),

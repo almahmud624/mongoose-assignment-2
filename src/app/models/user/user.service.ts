@@ -26,9 +26,17 @@ const updateUserIntoDB = async (userId: any, user: TUser) => {
   return await User.updateOne({ userId }, newData, { new: true });
 };
 
+const deleteUserFromDB = async (userId: any) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error("User Not Found");
+  }
+  return await User.deleteOne({ userId });
+};
+
 export const UserServices = {
   createUserIntoDB,
   fetchUserFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
+  deleteUserFromDB,
 };

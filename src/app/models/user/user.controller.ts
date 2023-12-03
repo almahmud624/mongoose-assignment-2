@@ -42,7 +42,27 @@ const fetchAllUser = async (req: Request, res: Response) => {
   }
 };
 
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await UserServices.getSingleUserFromDB(id);
+    const { password, ...resUser } = result?.toObject() || {};
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      data: resUser,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error?.message || "Something went wrong",
+      error: error,
+    });
+  }
+};
+
 export const userController = {
   createUser,
   fetchAllUser,
+  getSingleUser,
 };

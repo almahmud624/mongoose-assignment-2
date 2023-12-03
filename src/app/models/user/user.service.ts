@@ -11,7 +11,15 @@ const fetchUserFromDB = async () => {
   ]);
 };
 
+const getSingleUserFromDB = async (userId: any) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error("User Not Found");
+  }
+  return await User.findOne({ userId });
+};
+
 export const UserServices = {
   createUserIntoDB,
   fetchUserFromDB,
+  getSingleUserFromDB,
 };

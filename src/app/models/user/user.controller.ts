@@ -123,6 +123,24 @@ const createOrders = async (req: Request, res: Response) => {
   }
 };
 
+const getUserAllOrders = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await UserServices.getUserAllOrdersFromDB(id);
+    res.status(200).json({
+      success: true,
+      message: "Orders successfully fetched!",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error?.message || "Something went wrong",
+      error: error,
+    });
+  }
+};
+
 export const userController = {
   createUser,
   fetchAllUser,
@@ -130,4 +148,5 @@ export const userController = {
   updateUser,
   deleteUser,
   createOrders,
+  getUserAllOrders,
 };

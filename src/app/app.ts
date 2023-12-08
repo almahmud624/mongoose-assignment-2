@@ -21,14 +21,14 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const statusCode = error?.statusCode || 500;
+  const code = error?.code || 500;
   const message = error?.message;
-  res.status(statusCode).json({
+  res.status(code).send({
     success: false,
-    message: message || "Something went wrong",
+    message: code === 404 ? message : "Something went wrong",
     error: {
-      code: statusCode,
-      description: message || "Internal Server Error",
+      code: code,
+      description: code === 404 ? message : error || "Internal Server Error",
     },
   });
 };

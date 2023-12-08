@@ -21,14 +21,14 @@ const fullnameSchema = new mongoose_1.Schema({
     lastName: { type: String, required: [true, "Last Name is required"] },
 });
 const addressSchema = new mongoose_1.Schema({
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    country: { type: String, required: true },
+    street: { type: String, required: [true, "Street name is required"] },
+    city: { type: String, required: [true, "City name is required"] },
+    country: { type: String, required: [true, "Country name is required"] },
 });
 const ordersSchema = new mongoose_1.Schema({
-    productName: { type: String, required: true },
-    price: { type: Number, required: true },
-    quantity: { type: Number, required: true },
+    productName: { type: String, required: [true, "Product name is required"] },
+    price: { type: Number, required: [true, "Price name is required"] },
+    quantity: { type: Number, required: [true, "Quantity is required"] },
 });
 const userSchema = new mongoose_1.Schema({
     userId: {
@@ -39,31 +39,31 @@ const userSchema = new mongoose_1.Schema({
     username: {
         type: String,
         unique: true,
-        required: true,
+        required: [true, "Username is required"],
     },
     password: {
         type: String,
     },
     fullName: {
         type: fullnameSchema,
-        required: true,
+        required: [true, "Fullname is required"],
     },
     age: {
         type: Number,
-        required: true,
+        required: [true, "Age is required"],
     },
     email: {
         type: String,
-        required: true,
+        required: [true, "Email is required"],
     },
     isActive: {
         type: Boolean,
         required: true,
     },
-    hobbies: [{ type: String, required: true }],
+    hobbies: [{ type: String, required: [true, "Hobbies are required"] }],
     address: {
         type: addressSchema,
-        required: true,
+        required: [true, "Address is required"],
     },
     orders: [{ type: ordersSchema }],
 });

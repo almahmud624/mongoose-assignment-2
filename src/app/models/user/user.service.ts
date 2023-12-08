@@ -73,7 +73,7 @@ const calculatePriceOfOrders = async (userId: any) => {
 const checkUserExists = async (userId: any) => {
   if (!(await User.isUserExists(userId))) {
     throw {
-      statusCode: 404,
+      code: 404,
       message: "User not found!",
     };
   }

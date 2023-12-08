@@ -66,7 +66,7 @@ const calculatePriceOfOrders = (userId) => __awaiter(void 0, void 0, void 0, fun
 const checkUserExists = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(yield user_model_1.User.isUserExists(userId))) {
         throw {
-            statusCode: 404,
+            code: 404,
             message: "User not found!",
         };
     }

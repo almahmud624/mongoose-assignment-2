@@ -11,20 +11,20 @@ const router = express_1.default.Router();
 // parser
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-app.use("/api/v1/users", user_route_1.userRoutes);
+app.use("/api/users", user_route_1.userRoutes);
 app.get("/", (req, res) => {
     res.send("Hello Assignment");
 });
 // error handling middleware
 const errorHandler = (error, req, res, next) => {
-    const statusCode = (error === null || error === void 0 ? void 0 : error.statusCode) || 500;
+    const code = (error === null || error === void 0 ? void 0 : error.code) || 500;
     const message = error === null || error === void 0 ? void 0 : error.message;
-    res.status(statusCode).json({
+    res.status(code).send({
         success: false,
-        message: message || "Something went wrong",
+        message: code === 404 ? message : "Something went wrong",
         error: {
-            code: statusCode,
-            description: message || "Internal Server Error",
+            code: code,
+            description: code === 404 ? message : error || "Internal Server Error",
         },
     });
 };

@@ -36,7 +36,14 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         });
     }
     catch (error) {
-        next(error);
+        res.status(500).send({
+            success: false,
+            message: "Something went wrong",
+            error: {
+                code: 500,
+                description: error,
+            },
+        });
     }
 });
 const fetchAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
